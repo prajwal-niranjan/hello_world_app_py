@@ -1,0 +1,20 @@
+[project]
+name = "hello_world_app_python"
+version = "0.1.0"
+description = "A production-ready Hello World app in Python"
+authors = [{ name = "Your Name" }]
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "flask>=3.0.0",
+    "pytest>=7.4.2",
+    "requests>=2.31.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

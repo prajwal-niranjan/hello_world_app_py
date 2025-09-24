@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  hello_world_app:
+    build: .
+    container_name: hello_world_app_python
+    ports:
+      - "${PORT:-5000}:5000"
+    environment:
+      - PORT=${PORT:-5000}
+      - APP_ENV=${APP_ENV:-development}
+    restart: unless-stopped
