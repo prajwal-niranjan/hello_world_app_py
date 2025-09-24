@@ -31,7 +31,7 @@ jobs:
         run: pytest --maxfail=1 --disable-warnings -q
 
   docker:
-    runs-on: ubuntu-latest
+     runs-on: ubuntu-latest
     needs: build
 
     steps:
@@ -44,10 +44,22 @@ jobs:
       - name: Run container in background
         run: docker run -d -p 5000:5000 --name hello_app hello_world_app_python
 
-      - name: Test container endpoint
+      - name: Wait for app to be ready
         run: |
-          sleep 5
-          curl --fail http://localhost:5000/ || (docker logs hello_app && exit 1)
+          for i in {1..15}; do
+            if curl --silent http://localhost:5000/ > /dev/null; then
+              echo "App is up!"
+              exit 0
+            fi
+            echo "Waiting for app..."
+            sleep 2
+          done
+          echo "App did not start in time" >&2
+          docker logs hello_app
+          exit 1
+
+      - name: Run integration tests
+        run: pytest tests/test_integration.py
 
       - name: Stop container
         run: docker stop hello_app
