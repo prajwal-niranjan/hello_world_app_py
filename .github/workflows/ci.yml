@@ -24,6 +24,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Start Flask app
+        run: |
+          nohup python src/main.py &
+          sleep 5  # wait for server to start
+
       - name: Run tests
         run: |
           PYTHONPATH=src pytest --maxfail=1 --disable-warnings -q
